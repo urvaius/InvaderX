@@ -23,7 +23,7 @@ namespace InvaderX
        public StartScreen(Game game, SpriteBatch spriteBatch,SpriteFont spriteFont, Texture2D image)
            :base(game,spriteBatch)
        {
-           string[] menuItems = { "Start Game", "end GAme" };
+           string[] menuItems = { "Start Game", "End Game" };
            menuComponent = new MenuComponent(game, spriteBatch, spriteFont, menuItems);
            Components.Add(menuComponent);
            this.image = image;

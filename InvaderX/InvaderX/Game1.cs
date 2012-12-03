@@ -28,6 +28,7 @@ namespace InvaderX
         StartScreen startScreen;
         ActionScreen actionScreen;
        
+       
 
         //to use our menucomponent class
         // MenuComponent menuComponent;
@@ -49,6 +50,8 @@ namespace InvaderX
             // TODO: Add your initialization logic here
 
             base.Initialize();
+
+            
         }
 
         /// <summary>
@@ -67,13 +70,13 @@ namespace InvaderX
             Components.Add(startScreen);
             startScreen.Hide();
 
-            actionScreen = new ActionScreen(this, spriteBatch, Content.Load<Texture2D>("gameimageback"));
+            actionScreen = new ActionScreen(this, spriteBatch, Content.Load<Texture2D>("nebula1"),Content.Load<Texture2D>("ship/ship1"));
             Components.Add(actionScreen);
             actionScreen.Hide();
             activeScreen = startScreen;
             activeScreen.Show();
 
-
+            
             //   menuComponent = new MenuComponent(this, spriteBatch, Content.Load<SpriteFont>("menufont"), menuItems);
             //Components.Add(menuComponent);
 
