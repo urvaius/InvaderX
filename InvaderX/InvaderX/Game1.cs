@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
+
 namespace InvaderX
 {
     /// <summary>
@@ -18,6 +19,18 @@ namespace InvaderX
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        //for our menucomponent items and screens
+        GamePadState gamePadState;
+        GamePadState oldGamePadState;
+        KeyboardState keyboardState;
+        KeyboardState oldKeyBoardState;
+        GameScreen activeScreen;
+        StartScreen startScreen;
+        ActionScreen actionScreen;
+       
+
+        //to use our menucomponent class
+        // MenuComponent menuComponent;
 
         public Game1()
         {
@@ -46,6 +59,25 @@ namespace InvaderX
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            //this is code to add a generic menu etc. using our MenuComponent class
+
+            // string[] menuItems = { "Start Game", "High Scores", "End Game" };
+
+            startScreen = new StartScreen(this, spriteBatch, Content.Load<SpriteFont>("menufont"), Content.Load<Texture2D>("menuimage"));
+            Components.Add(startScreen);
+            startScreen.Hide();
+
+            actionScreen = new ActionScreen(this, spriteBatch, Content.Load<Texture2D>("gameimageback"));
+            Components.Add(actionScreen);
+            actionScreen.Hide();
+            activeScreen = startScreen;
+            activeScreen.Show();
+
+
+            //   menuComponent = new MenuComponent(this, spriteBatch, Content.Load<SpriteFont>("menufont"), menuItems);
+            //Components.Add(menuComponent);
+
+
 
             // TODO: use this.Content to load your game content here
         }
@@ -67,13 +99,54 @@ namespace InvaderX
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
+
+
+            keyboardState = Keyboard.GetState();
+            gamePadState = GamePad.GetState(PlayerIndex.One);
+
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            // TODO: Add your update logic here
 
+            if (activeScreen == startScreen)
+            {
+                if (CheckKey(Keys.Enter) || CheckButton(Buttons.A))
+                {
+                    if (startScreen.SelectedIndex == 0)
+                    {
+                        activeScreen.Hide();
+                        activeScreen = actionScreen;
+                        activeScreen.Show();
+
+
+                    }
+                    if (startScreen.SelectedIndex == 1)
+                    {
+                        this.Exit();
+                    }
+                }
+            }
             base.Update(gameTime);
+            oldKeyBoardState = keyboardState;
+            oldGamePadState = gamePadState;
         }
+        private bool CheckButton(Buttons button)
+        {
+            return gamePadState.IsButtonUp(button) &&
+                oldGamePadState.IsButtonDown(button);
+        }
+        private bool CheckKey(Keys theKey)
+        {
+            return keyboardState.IsKeyUp(theKey) &&
+                oldKeyBoardState.IsKeyDown(theKey);
+
+        }
+
+        // TODO: Add your update logic here
+
+
+
 
         /// <summary>
         /// This is called when the game should draw itself.
@@ -83,9 +156,15 @@ namespace InvaderX
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
+
+
 
             base.Draw(gameTime);
+            spriteBatch.End();
+            // TODO: Add your drawing code here
+
+            
         }
     }
 }
