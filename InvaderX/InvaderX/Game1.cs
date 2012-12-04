@@ -50,6 +50,7 @@ namespace InvaderX
             // TODO: Add your initialization logic here
 
             base.Initialize();
+            
 
             
         }
@@ -70,7 +71,7 @@ namespace InvaderX
             Components.Add(startScreen);
             startScreen.Hide();
 
-            actionScreen = new ActionScreen(this, spriteBatch, Content.Load<Texture2D>("nebula1"),Content.Load<Texture2D>("ship/ship1"));
+            actionScreen = new ActionScreen(this, spriteBatch, Content.Load<Texture2D>("nebula1"),Content.Load<Texture2D>("ship/ship1"),graphics);
             Components.Add(actionScreen);
             actionScreen.Hide();
             activeScreen = startScreen;
